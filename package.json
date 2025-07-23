@@ -1,0 +1,23 @@
+{
+  "name": "mini-projectcrud",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://stanlettee.github.io/mini-projectCrud/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx parcel src/index.html",
+    "build": "parcel build src/index.html --no-cache --public-url /mini-projectCrud",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build",
+    "server": "npx json-server students.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.15.4"
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
