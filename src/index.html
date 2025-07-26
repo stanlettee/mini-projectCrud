@@ -5,8 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 </head>
 <body>
-    <h1>Hello world</h1>
+    <button class="add">Add posts</button>
+    <ul class="posts">
+
+    </ul>
+    <div class="modal-backdrop hidden">
+        <div class="modal">
+            <h2>Create new post</h2>
+            <form id="new-post-form">
+                    <input type="text" placeholder="Username" name="Username" required />
+                    <input type="url" placeholder="Image URL" name="url" required />
+                    <button type="submit" class="add-button">Create</button>
+                    <button type="button" class="close-modal">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal-backdropEdit hidden">
+        <div class="modalEdit">
+            <h2>Update a post</h2>
+            <form id="edit-post-form">
+                    <input id="username" type="text" placeholder="Username" name="Username" required />
+                    <input id="url" type="url" placeholder="Image URL" name="url" required />
+                    <button type="submit" class="edit-button">Edit</button>
+                    <button type="button" class="close-modalEdit">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script type="module" src="./js/script.js"></script>
 </body>
 </html>

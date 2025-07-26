@@ -1,3 +1,182 @@
-h1 {
-    color: red;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* .search-form {
+    margin: 20px auto;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+} */
+
+.posts {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.user {
+    margin-bottom: 0;
+    color: #434040
+}
+
+.post-card {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    width: 300px;
+    padding-bottom: 10px;
+}
+
+.post-card img {
+    width: 100%;
+    max-height: 200px;
+    height: auto;
+    display: block;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 0;
+    padding: 2px 0;
+}
+
+.stats-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.stats-item i {
+    margin-right: 5px;
+    color: #888;
+}
+
+.add {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    transition: background 0.3s;
+}
+
+.add:hover {
+    background-color: #005fd1;
+}
+
+
+.post-card button {
+    margin: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+} 
+
+.edit {
+    background-color: #2ca4a4;
+    color: white;
+}
+
+.edit:hover {
+    background-color: #218c8c;
+}
+
+.delete {
+    background-color: #e63946;
+    color: white;
+}
+
+.delete:hover {
+    background-color: #b72c38;
+}
+
+.modal-backdrop, .modal-backdropEdit {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal, .modalEdit {
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.modal h2, .modalEdit h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.modal form, .modalEdit form  {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal input, .modalEdit input  {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.modal button, .modalEdit button  {
+    padding: 10px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal button[type="submit"], .modalEdit button[type="submit"]  {
+    background-color: #0077ff;
+    color: white;
+}
+
+.modal .close-modal, .modalEdit .close-modalEdit  {
+    background-color: #aaa;
+    color: white;
 }
