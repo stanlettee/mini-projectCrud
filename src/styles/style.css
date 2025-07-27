@@ -171,7 +171,7 @@ body {
     cursor: pointer;
 }
 
-.modal button[type="submit"], .modalEdit button[type="submit"]  {
+#create-post, #update-post  {
     background-color: #0077ff;
     color: white;
 }
@@ -189,7 +189,7 @@ body {
     max-width: 500px;
 }
 
-.search-form input[type="text"] {
+#search-input {
     width: 100%;
     padding: 12px 20px;
     font-size: 16px;
@@ -199,7 +199,7 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.search-form input[type="text"]:focus {
+#search-input:focus {
     border-color: #0077ff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 119, 255, 0.4);
@@ -263,7 +263,7 @@ body {
   gap: 10px;
 }
 
-#comments-post-form input[type="text"] {
+#comments-post-form input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;

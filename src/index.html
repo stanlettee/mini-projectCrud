@@ -10,6 +10,7 @@
 <body>
     <form class="search-form" id="search-form">
     <input
+        id="search-input"
         type="text"
         name="query"
         autocomplete="off"
@@ -24,7 +25,7 @@
             <form id="new-post-form">
                     <input type="text" placeholder="Username" name="Username" required />
                     <input type="url" placeholder="Image URL" name="url" required />
-                    <button type="submit" class="add-button">Create</button>
+                    <button id="create-post" type="submit" class="add-button">Create</button>
                     <button type="button" class="close-modal">Cancel</button>
             </form>
         </div>
@@ -37,7 +38,7 @@
             <form id="edit-post-form">
                     <input id="username" type="text" placeholder="Username" name="Username" required />
                     <input id="url" type="url" placeholder="Image URL" name="url" required />
-                    <button type="submit" class="edit-button">Edit</button>
+                    <button id="update-post" type="submit" class="edit-button">Edit</button>
                     <button type="button" class="close-modalEdit">Cancel</button>
             </form>
         </div>
