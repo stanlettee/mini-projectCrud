@@ -668,7 +668,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"2xGku":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _render = require("./render");
+var _render = require("./render/render");
 var _renderDefault = parcelHelpers.interopDefault(_render);
 var _get = require("./api/get");
 var _getDefault = parcelHelpers.interopDefault(_get);
@@ -680,6 +680,11 @@ var _delete = require("./api/delete");
 var _deleteDefault = parcelHelpers.interopDefault(_delete);
 var _updateLikes = require("./api/updateLikes");
 var _updateLikesDefault = parcelHelpers.interopDefault(_updateLikes);
+var _renderComments = require("./render/renderComments");
+var _renderCommentsDefault = parcelHelpers.interopDefault(_renderComments);
+var _postComments = require("./api/postComments");
+var _postCommentsDefault = parcelHelpers.interopDefault(_postComments);
+let postsList = [];
 document.querySelector('.add').addEventListener('click', ()=>{
     document.querySelector('.modal-backdrop').classList.remove('hidden');
 });
@@ -690,8 +695,10 @@ document.querySelector('.close-modalEdit').addEventListener('click', ()=>{
     document.querySelector('.modal-backdropEdit').classList.add('hidden');
 });
 (0, _getDefault.default)().then((data)=>{
-    console.log(data);
+    console.log(data[0].commentList);
     document.querySelector(".posts").innerHTML = (0, _renderDefault.default)(data);
+    postsList = data;
+    console.log(postsList);
 });
 document.querySelector('#new-post-form').addEventListener('submit', (e)=>{
     e.preventDefault();
@@ -713,6 +720,7 @@ document.querySelector('#new-post-form').addEventListener('submit', (e)=>{
     e.target.elements.Username.value = "";
     e.target.elements.url.value = "";
 });
+let commentPostId = null;
 document.querySelector('.posts').addEventListener('click', (e)=>{
     if (e.target.closest('.like-button')) {
         const likeButton = e.target.closest('.like-button');
@@ -725,6 +733,15 @@ document.querySelector('.posts').addEventListener('click', (e)=>{
         likesElement.textContent = likes;
         likeButton.classList.add('.liked');
         (0, _updateLikesDefault.default)(likes, postId);
+    }
+    if (e.target.closest('.comment-button')) {
+        document.querySelector('.modal-backdropCommments').classList.remove('hidden');
+        const commentButton = e.target.closest('.comment-button');
+        const postCard = commentButton.closest('.post-card');
+        commentPostId = postCard.dataset.id;
+        (0, _getDefault.default)().then((data)=>{
+            document.querySelector(".comments").innerHTML = (0, _renderCommentsDefault.default)(data.find((post)=>post.id === commentPostId).commentList);
+        });
     }
 });
 document.querySelector('.posts').addEventListener('click', (e)=>{
@@ -764,8 +781,72 @@ document.querySelector('.edit-button').addEventListener('click', ()=>{
         console.error('Error updating post:', error);
     });
 });
+document.querySelector('#search-form input[name="query"]').addEventListener('input', (e)=>{
+    const searchTerm = e.target.value.toLowerCase();
+    document.querySelectorAll('.post-card').forEach((card)=>{
+        const userName = card.querySelector('.user').textContent.toLowerCase();
+        if (userName.includes(searchTerm)) card.style.display = 'block';
+        else card.style.display = 'none';
+    });
+});
+// document.querySelector('.comment-button').addEventListener(() => {
+// })
+document.querySelector('.close-comment-button').addEventListener('click', ()=>{
+    document.querySelector('.modal-backdropCommments').classList.add('hidden');
+});
+// document.querySelector(".comments").addEventListener("click", (e) => {
+//   if (e.target.classList.contains("delete-comment")) {
+//     const index = e.target.dataset.index;
+//     const postId = currentPostId; 
+//     deleteComment(postId, index);
+//   }
+// });
+let updatedList = [];
+document.querySelector('.post-comment-button').addEventListener('click', ()=>{
+    let comment = document.querySelector('#info').value;
+    (0, _getDefault.default)().then((data)=>{
+        let post = data.find((post)=>post.id === commentPostId);
+        console.log(post.commentList);
+        updatedList = updatedList.concat(post.commentList);
+        updatedList.push(comment);
+        let comments = updatedList.length;
+        (0, _postCommentsDefault.default)(updatedList, commentPostId, comments).then(()=>{
+            (0, _getDefault.default)().then((data)=>{
+                document.querySelector(".posts").innerHTML = (0, _renderDefault.default)(data);
+            });
+        });
+    });
+    document.querySelector('.modal-backdropCommments').classList.add('hidden');
+    document.querySelector('#info').value = "";
+});
+document.querySelector('.comments').addEventListener('click', (e)=>{
+    if (e.target.closest('.delete-comment')) {
+        const commentButton = e.target.closest('.delete-comment');
+        const commentCard = commentButton.closest('li.comment-card');
+        const commentToDelete = commentCard.querySelector('.comment-info').textContent.trim();
+        console.log('Deleting comment:', commentToDelete);
+        (0, _getDefault.default)().then((data)=>{
+            let post = data.find((post)=>post.id === commentPostId);
+            console.log('Original comments:', post.commentList);
+            const originalList = [
+                ...post.commentList
+            ];
+            const indexToRemove = originalList.indexOf(commentToDelete);
+            if (indexToRemove !== -1) originalList.splice(indexToRemove, 1);
+            const updatedList = originalList;
+            let comments = updatedList.length;
+            console.log('Updated comments:', updatedList);
+            (0, _postCommentsDefault.default)(updatedList, commentPostId, comments).then(()=>{
+                (0, _getDefault.default)().then((data)=>{
+                    document.querySelector(".posts").innerHTML = (0, _renderDefault.default)(data);
+                });
+            });
+            document.querySelector('.modal-backdropCommments').classList.add('hidden');
+        });
+    }
+});
 
-},{"./render":"dvMGd","./api/get":"eGSFA","./api/post":"3SQvt","./api/edit":"1ZaDK","./api/delete":"aOAXi","./api/updateLikes":"khHM5","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"dvMGd":[function(require,module,exports,__globalThis) {
+},{"./render/render":"3en4C","./api/get":"eGSFA","./api/post":"3SQvt","./api/edit":"1ZaDK","./api/delete":"aOAXi","./api/updateLikes":"khHM5","./render/renderComments":"abx1d","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./api/postComments":"e4Zuq"}],"3en4C":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>render);
@@ -782,7 +863,7 @@ function render(posts) {
             </p>
             <p id="comment" class="stats-item">
                 <button class="comment-button"><i class="material-icons">comment</i></button>
-                ${object.comments}
+                <span class="commments-count">${object.comments}</span>
             </p>
         </div>
         <button type="click" class="edit">Edit</button>
@@ -900,6 +981,44 @@ async function updateLikes(likes, id) {
             },
             body: JSON.stringify({
                 likes: likes
+            })
+        }).then((res)=>res.json());
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"abx1d":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>renderComments);
+function renderComments(comments) {
+    if (!Array.isArray(comments)) {
+        console.warn("renderComments expected an array, but got:", comments);
+        return "<li class='comment-card'>No comments yet.</li>";
+    }
+    return comments.map((item)=>`
+            <li data-comment="This is a comment to delete" class="comment-card">
+                <div class="div-comment"><p class="comment-info">${item}</p></div>
+                <button class="delete-comment">Delete</button>
+            </li>
+        `).join("");
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"e4Zuq":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>postComment);
+async function postComment(updatedComments, id, amountofComments) {
+    try {
+        return await fetch(`https://6882a21521fa24876a9b6374.mockapi.io/posts/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                comments: amountofComments,
+                commentList: updatedComments
             })
         }).then((res)=>res.json());
     } catch (error) {

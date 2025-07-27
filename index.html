@@ -1,8 +1,9 @@
-<!DOCTYPE html><html lang=en><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>Document</title><link rel=stylesheet href=/mini-projectCrud/mini-projectCrud.ab22955b.css><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel=stylesheet><body>
-    <button class=add>Add posts</button>
-    <ul class=posts>
-
-    </ul>
+<!DOCTYPE html><html lang=en><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>Document</title><link rel=stylesheet href=/mini-projectCrud/mini-projectCrud.c312c0b4.css><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel=stylesheet><body>
+    <form class=search-form id=search-form>
+    <input name=query autocomplete=off placeholder="Search posts">
+    </form>
+    <button class=add>Add post</button>
+    <ul class=posts></ul>
     <div class="hidden modal-backdrop">
         <div class=modal>
             <h2>Create new post</h2>
@@ -27,5 +28,19 @@
             </form>
         </div>
     </div>
-    <script type=module src=/mini-projectCrud/mini-projectCrud.598bd123.js></script>
+
+
+    <div class="hidden modal-backdropCommments">
+        <div class=modalComments>
+            <h2>Comments</h2>
+            <ul class=comments></ul>
+            <form id=comments-post-form>
+                    <input id=info placeholder=Info name=info required>
+                    <button type=button class=post-comment-button>Post a comment</button>
+                    <button type=button class=close-comment-button>Close</button>
+                    
+            </form>
+        </div>
+    </div>
+    <script type=module src=/mini-projectCrud/mini-projectCrud.4979d687.js></script>
 
