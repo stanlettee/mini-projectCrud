@@ -1,12 +1,13 @@
-import { default as render } from "./render"
+import { default as render } from "./render/render"
 import { default as getPosts } from "./api/get"
 import { default as addPost } from "./api/post"
 import { default as updatePost } from "./api/edit"
 import { default as deletePost } from "./api/delete"
 import { default as updateLikes } from "./api/updateLikes"
+import { default as renderComments } from "./render/renderComments"
+import { default as postComment } from "./api/postComments"
 
-
-
+let postsList = []
 
 document.querySelector('.add').addEventListener('click', () => {
   document.querySelector('.modal-backdrop').classList.remove('hidden');
@@ -24,9 +25,10 @@ document.querySelector('.close-modalEdit').addEventListener('click', () => {
 
 getPosts().then(
     (data) =>{
-        console.log(data);
+        console.log(data[0].commentList);
         document.querySelector(".posts").innerHTML = render(data);
-
+        postsList = data
+        console.log(postsList)
     }
   );
 
@@ -53,6 +55,9 @@ document.querySelector('#new-post-form').addEventListener('submit', (e) => {
   });
 
 
+let commentPostId = null
+
+
 document.querySelector('.posts').addEventListener('click', (e) => {
     if (e.target.closest('.like-button')){
         const likeButton = e.target.closest('.like-button')
@@ -68,7 +73,25 @@ document.querySelector('.posts').addEventListener('click', (e) => {
         likeButton.classList.add('.liked'); 
         updateLikes(likes, postId)
     };
+
+    if (e.target.closest('.comment-button')) {
+            document.querySelector('.modal-backdropCommments').classList.remove('hidden');  
+            const commentButton = e.target.closest('.comment-button')
+            const postCard = commentButton.closest('.post-card');
+            commentPostId = postCard.dataset.id;
+
+            getPosts().then((data) => {
+                document.querySelector(".comments").innerHTML = renderComments(data.find(post => post.id === commentPostId).commentList)
+            })
+    };
+
+
+
+
+
 });
+
+
 
 document.querySelector('.posts').addEventListener('click', (e) => {
     if (e.target.closest('.delete')){
@@ -115,6 +138,113 @@ document.querySelector('.edit-button').addEventListener('click', () => {
             console.error('Error updating post:', error);
     });
 })
+
+
+document.querySelector('#search-form input[name="query"]').addEventListener('input', (e) => {
+  const searchTerm = e.target.value.toLowerCase();
+
+  document.querySelectorAll('.post-card').forEach(card => {
+    const userName = card.querySelector('.user').textContent.toLowerCase();
+    if (userName.includes(searchTerm)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});
+
+
+// document.querySelector('.comment-button').addEventListener(() => {
+    
+// })
+
+document.querySelector('.close-comment-button').addEventListener('click', () => {
+    document.querySelector('.modal-backdropCommments').classList.add('hidden');
+})
+
+
+// document.querySelector(".comments").addEventListener("click", (e) => {
+//   if (e.target.classList.contains("delete-comment")) {
+//     const index = e.target.dataset.index;
+//     const postId = currentPostId; 
+//     deleteComment(postId, index);
+//   }
+// });
+
+
+
+
+
+let updatedList = []
+
+document.querySelector('.post-comment-button').addEventListener('click', () => {
+    let comment = document.querySelector('#info').value
+    
+    getPosts().then(
+        (data) =>{
+            let post = data.find(post => post.id === commentPostId)
+            console.log(post.commentList)
+            updatedList = updatedList.concat(post.commentList)
+            updatedList.push(comment)
+            let comments = updatedList.length;
+
+        
+            postComment(updatedList, commentPostId, comments).then(() => {
+                getPosts().then(
+                    (data) =>{
+                        document.querySelector(".posts").innerHTML = render(data);
+                    }
+                );
+        });
+        }
+    );
+
+    
+    document.querySelector('.modal-backdropCommments').classList.add('hidden');
+    document.querySelector('#info').value = ""
+})
+
+
+document.querySelector('.comments').addEventListener('click', (e) => {
+    if (e.target.closest('.delete-comment')) { 
+        const commentButton = e.target.closest('.delete-comment');
+        const commentCard = commentButton.closest('li.comment-card');
+        const commentToDelete = commentCard.querySelector('.comment-info').textContent.trim();
+        console.log('Deleting comment:', commentToDelete);
+
+        getPosts().then((data) => {
+            let post = data.find(post => post.id === commentPostId);
+            console.log('Original comments:', post.commentList);
+
+            
+            const originalList = [...post.commentList];
+            const indexToRemove = originalList.indexOf(commentToDelete);
+
+            if (indexToRemove !== -1) {
+                originalList.splice(indexToRemove, 1);
+            }
+
+            const updatedList = originalList;
+            let comments = updatedList.length;
+
+           
+            console.log('Updated comments:', updatedList);
+            postComment(updatedList, commentPostId, comments).then(() => {
+                getPosts().then(
+                    (data) =>{
+                        document.querySelector(".posts").innerHTML = render(data);
+                    }
+                );
+            });
+
+             
+            document.querySelector('.modal-backdropCommments').classList.add('hidden');
+        });
+    }
+});
+
+
+
 
 
 

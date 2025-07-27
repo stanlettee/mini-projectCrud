@@ -12,7 +12,7 @@ export default function render(posts) {
             </p>
             <p id="comment" class="stats-item">
                 <button class="comment-button"><i class="material-icons">comment</i></button>
-                ${object.comments}
+                <span class="commments-count">${object.comments}</span>
             </p>
         </div>
         <button type="click" class="edit">Edit</button>

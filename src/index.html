@@ -8,10 +8,16 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 </head>
 <body>
-    <button class="add">Add posts</button>
-    <ul class="posts">
-
-    </ul>
+    <form class="search-form" id="search-form">
+    <input
+        type="text"
+        name="query"
+        autocomplete="off"
+        placeholder="Search posts"
+    />
+    </form>
+    <button class="add">Add post</button>
+    <ul class="posts"></ul>
     <div class="modal-backdrop hidden">
         <div class="modal">
             <h2>Create new post</h2>
@@ -33,6 +39,20 @@
                     <input id="url" type="url" placeholder="Image URL" name="url" required />
                     <button type="submit" class="edit-button">Edit</button>
                     <button type="button" class="close-modalEdit">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal-backdropCommments hidden">
+        <div class="modalComments">
+            <h2>Comments</h2>
+            <ul class="comments"></ul>
+            <form id="comments-post-form">
+                    <input id="info" type="text" placeholder="Info" name="info" required />
+                    <button type="button" class="post-comment-button">Post a comment</button>
+                    <button type="button" class="close-comment-button">Close</button>
+                    <!-- <button type="button" class="delete-comment-button">Delete a comment</button> -->
             </form>
         </div>
     </div>
