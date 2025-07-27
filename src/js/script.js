@@ -175,8 +175,6 @@ document.querySelector('.close-comment-button').addEventListener('click', () => 
 
 
 
-let updatedList = []
-
 document.querySelector('.post-comment-button').addEventListener('click', () => {
     let comment = document.querySelector('#info').value
     
@@ -184,8 +182,7 @@ document.querySelector('.post-comment-button').addEventListener('click', () => {
         (data) =>{
             let post = data.find(post => post.id === commentPostId)
             console.log(post.commentList)
-            updatedList = updatedList.concat(post.commentList)
-            updatedList.push(comment)
+            const updatedList = [...post.commentList, comment];
             let comments = updatedList.length;
 
         
